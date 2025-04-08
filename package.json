@@ -7,7 +7,9 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:3taps": "node dist/3taps/server/server.mjs"
+    "serve:ssr:3taps": "node dist/3taps/server/server.mjs",
+    "predeploy": "npm run build",
+    "deploy": "firebase deploy --only hosting:3taps"
   },
   "private": true,
   "dependencies": {
