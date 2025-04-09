@@ -9,4 +9,4 @@ export const environment = {
     },
     emailTo: 'info@3taps.me'
   }
-}; 
+};
