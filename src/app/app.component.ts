@@ -1,12 +1,18 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
+import { ContactFormComponent } from './components/contact-form/contact-form.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  standalone: true,
+  imports: [CommonModule, RouterOutlet, ContactFormComponent],
+  templateUrl: './app.component.html'
 })
 export class AppComponent {
-  title = '3taps';
+  showContactForm = false;
+
+  toggleContactForm() {
+    this.showContactForm = !this.showContactForm;
+  }
 }
