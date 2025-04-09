@@ -9,7 +9,7 @@
     "test": "ng test",
     "serve:ssr:3taps": "node dist/3taps/server/server.mjs",
     "predeploy": "npm run build",
-    "deploy": "firebase deploy --only hosting:3taps"
+    "deploy": "firebase deploy --only hosting:three-taps"
   },
   "private": true,
   "dependencies": {
@@ -25,6 +25,7 @@
     "@angular/ssr": "^19.1.8",
     "express": "^4.18.2",
     "rxjs": "~7.8.0",
+    "sweetalert2": "^11.17.2",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"
   },

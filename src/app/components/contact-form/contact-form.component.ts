@@ -2,6 +2,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { EmailService } from '../../services/email.service';
+import { NotificationService } from '../../services/notification.service';
 
 @Component({
   selector: 'app-contact-form',
@@ -18,7 +19,7 @@ import { EmailService } from '../../services/email.service';
           <!-- Header -->
           <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
             <div class="flex justify-between items-center mb-6">
-              <h3 class="text-2xl font-semibold leading-6 text-brand-primary">Kontaktirajte Nas</h3>
+              <h3 class="text-2xl font-semibold leading-6 text-brand-primary py-4">Kontakt</h3>
               <button 
                 (click)="onClose()" 
                 class="text-gray-400 hover:text-gray-500 transition-colors duration-200"
@@ -70,18 +71,25 @@ import { EmailService } from '../../services/email.service';
           </div>
           
           <!-- Footer -->
-          <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 gap-3">
+          <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 gap-3 justify-between">
             <button type="button" 
                     (click)="onSubmit()"
-                    [disabled]="!contactForm.valid"
-                    class="w-full inline-flex justify-center rounded-lg px-4 py-2 text-sm font-semibold text-white shadow-sm 
+                    [disabled]="!contactForm.valid || isLoading"
+                    class="w-full inline-flex justify-center rounded-lg py-4 px-8 text-sm font-semibold text-white shadow-sm 
                            bg-brand-primary hover:bg-brand-secondary disabled:opacity-50 disabled:cursor-not-allowed
                            transition-all duration-200 sm:w-auto">
+              <span *ngIf="isLoading" class="mr-2">
+                <svg class="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+              </span>
               Pošalji
             </button>
             <button type="button" 
                     (click)="onClose()"
-                    class="mt-3 w-full inline-flex justify-center rounded-lg px-4 py-2 text-sm font-semibold 
+                    [disabled]="isLoading"
+                    class="mt-3 w-full inline-flex justify-center rounded-lg py-4 px-8 text-sm font-semibold 
                            text-gray-900 bg-white hover:bg-gray-50 shadow-sm ring-1 ring-inset ring-gray-300 
                            transition-all duration-200 sm:mt-0 sm:w-auto">
               Odustani
@@ -91,17 +99,10 @@ import { EmailService } from '../../services/email.service';
       </div>
     </div>
 
-    <!-- Add loading state and success/error messages -->
+    <!-- Loading overlay -->
     @if (isLoading) {
       <div class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
         <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-brand-primary"></div>
-      </div>
-    }
-
-    @if (submitStatus) {
-      <div class="fixed bottom-4 right-4 p-4 rounded-lg shadow-lg z-50"
-           [ngClass]="submitStatus.type === 'success' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'">
-        {{ submitStatus.message }}
       </div>
     }
   `
@@ -110,11 +111,11 @@ export class ContactFormComponent {
   @Output() close = new EventEmitter<void>();
   contactForm: FormGroup;
   isLoading = false;
-  submitStatus: { type: 'success' | 'error', message: string } | null = null;
 
   constructor(
     private fb: FormBuilder,
-    private emailService: EmailService
+    private emailService: EmailService,
+    private notificationService: NotificationService
   ) {
     this.contactForm = this.fb.group({
       name: ['', Validators.required],
@@ -129,24 +130,20 @@ export class ContactFormComponent {
       this.isLoading = true;
       this.emailService.sendEmail(this.contactForm.value).subscribe({
         next: () => {
-          this.submitStatus = {
-            type: 'success',
-            message: 'Poruka je uspješno poslana!'
-          };
-          setTimeout(() => {
-            this.onClose();
-          }, 2000);
+          this.isLoading = false;
+          this.notificationService.success(
+            'Uspješno!', 
+            'Vaša poruka je uspješno poslata. Uskoro ćemo vas kontaktirati.'
+          );
+          this.onClose();
         },
         error: (error) => {
+          this.isLoading = false;
           console.error('Email sending failed:', error);
-          this.submitStatus = {
-            type: 'error',
-            message: 'Došlo je do greške. Molimo pokušajte ponovo.'
-          };
-          this.isLoading = false;
-        },
-        complete: () => {
-          this.isLoading = false;
+          this.notificationService.error(
+            'Greška!', 
+            'Došlo je do greške prilikom slanja poruke. Molimo pokušajte ponovo.'
+          );
         }
       });
     }
