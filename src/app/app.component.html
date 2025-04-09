@@ -1,22 +1,21 @@
 <router-outlet />
 
 <div class="min-h-screen bg-brand-light">
-  <!-- Hero Banner Section -->
-  <div class="relative bg-gradient-to-r from-brand-primary to-brand-secondary text-white">
-    <div class="absolute inset-0 bg-black opacity-40"></div>
-    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 flex flex-col items-center">
-      <img src="assets/logo.png" alt="QR Naručivanje Logo" class="h-24 w-auto mb-8">
-      <h1 class="text-4xl md:text-6xl font-bold text-center">
+  <!-- Hero Banner Section with Gradient to White Center -->
+  <div class="relative bg-gray-50 p-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex flex-col items-center">
+      <img src="assets/logo-transparent.png" alt="3Taps Logo" class="h-24 w-auto mb-6">
+      <h1 class="text-4xl md:text-6xl font-bold text-center text-brand-primary">
         <span class="block">Revolucija u ugostiteljstvu</span>
-        <span class="block mt-2 text-brand-light">Bez čekanja. Bez grešaka.</span>
+        <span class="block mt-2 text-brand-secondary">Bez čekanja. Bez grešaka.</span>
       </h1>
-      <p class="mt-6 text-xl text-center max-w-3xl">
+      <p class="mt-6 text-xl text-center max-w-3xl text-gray-700">
         Digitalizujte vaš objekat i oslobodite vaše osoblje nepotrebnog posla. 
-        Gosti skeniraju, naručuju i prate status - sve sa svog telefona.
+        Gosti skeniraju, poručuju i prate status - sve sa svog telefona.
       </p>
       <div class="mt-10">
         <a href="#" (click)="toggleContactForm(); $event.preventDefault()" 
-           class="px-8 py-4 bg-white text-brand-primary font-bold rounded-lg shadow-lg hover:bg-gray-100 transition-all duration-300">
+           class="px-8 py-4 bg-brand-primary text-white font-bold rounded-lg shadow-lg hover:bg-brand-secondary transition-all duration-300">
           Zatražite demo
         </a>
       </div>
@@ -54,7 +53,7 @@
               </svg>
             </div>
             <h3 class="text-xl font-medium text-gray-900">Povećanje prodaje</h3>
-            <p class="mt-4 text-gray-500">Gosti naručuju više kada vide vizuelni meni. Povećajte prosječnu vrijednost porudžbine za 15-25%.</p>
+            <p class="mt-4 text-gray-500">Gosti poručuju više kada vide vizuelni meni. Povećajte prosječnu vrijednost porudžbine za 15-25%.</p>
           </div>
         </div>
 
@@ -253,7 +252,7 @@
       <div class="text-center mb-12">
         <h2 class="text-3xl font-bold mb-4">Spremni da unaprijedite uslugu??</h2>
         <p class="text-xl text-gray-200 max-w-3xl mx-auto mb-8">
-          Olakšajte posao vašem osoblju i pružite gostima moderno iskustvo naručivanja
+          Olakšajte posao vašem osoblju i pružite gostima moderno iskustvo poručivanja
         </p>
         <a href="#" (click)="toggleContactForm(); $event.preventDefault()" 
            class="inline-flex items-center justify-center px-8 py-4 border border-transparent text-lg font-medium rounded-md text-brand-primary bg-white hover:bg-brand-light shadow-lg hover:shadow-xl transition-all duration-300">
